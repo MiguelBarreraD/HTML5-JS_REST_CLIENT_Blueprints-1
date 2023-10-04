@@ -4,7 +4,6 @@ $(document).ready(function () {
         updateBlueprintsByAuthor(authorName);
     });
 
-    // Agregar evento de clic a los botones generados dinámicamente
     $('#blueprintsTable tbody').on('click', 'button.viewBlueprint', function () {
         const authorName = $(this).data('author');
         const blueprintName = $(this).data('blueprint');
@@ -12,13 +11,13 @@ $(document).ready(function () {
     });
 
     function updateBlueprintsByAuthor(authorName) {
-        apimock.getBlueprintsByAuthor(authorName, function (blueprints) {
+        apiclient.getBlueprintsByAuthor(authorName, function (blueprints) {
             const mappedBlueprints = blueprints.map(function (bp) {
                 return {
                     name: bp.name,
                     numPoints: bp.points.length
                 };
-            });
+            });       
 
             $('#blueprintsTable tbody').empty();
 
@@ -26,7 +25,6 @@ $(document).ready(function () {
                 const row = $('<tr>');
                 row.append($('<td>').text(bp.name));
                 row.append($('<td>').text(bp.numPoints));
-                // Agregar un botón para ver el plano
                 row.append($('<td>').html('<button class="btn btn-primary viewBlueprint" data-author="' + authorName + '" data-blueprint="' + bp.name + '">Ver</button>'));
                 $('#blueprintsTable tbody').append(row);
             });
@@ -40,7 +38,7 @@ $(document).ready(function () {
     }
 
     function getBlueprintsByNameAndAuthor(authorName, bpname) {
-        apimock.getBlueprintsByNameAndAuthor(authorName, bpname, function (blueprint) {
+        apiclient.getBlueprintsByNameAndAuthor(authorName, bpname, function (blueprint) {
             if (blueprint) {
                 drawBlueprint(blueprint);
             }

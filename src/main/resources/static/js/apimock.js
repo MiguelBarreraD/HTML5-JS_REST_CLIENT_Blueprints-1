@@ -101,14 +101,6 @@ apimock = (function () {
     ];
 
     return {
-		getSelectedAuthor: function () {
-            return selectedAuthor;
-        },
-
-		getSelectedBlueprints: function () {
-            return selectedBlueprints;
-        },
-
         getBlueprintsByAuthor: function (authname, callback) {
             selectedAuthor = authname;
             selectedBlueprints = mockdata[authname].map(function (bp) {
@@ -126,14 +118,4 @@ apimock = (function () {
             );
         }
     }
-
 })();
-
-
-
-var fun=function(list){
-	console.info(list);	
-}
-
-apimock.getBlueprintsByAuthor("Miguel",fun);
-//apimock.getBlueprintsByNameAndAuthor("johnconnor","house",fun); 
