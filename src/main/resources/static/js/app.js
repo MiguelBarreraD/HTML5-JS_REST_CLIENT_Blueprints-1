@@ -9,72 +9,58 @@ $(document).ready(function () {
         const authorName = $(this).data('author');
         const blueprintName = $(this).data('blueprint');
         const apiType = $('#apiType').val();
-        getBlueprintsByNameAndAuthor(authorName, blueprintName,apiType);
+        getBlueprintsByNameAndAuthor(authorName, blueprintName, apiType);
     });
 
     function updateBlueprintsByAuthor(authorName, apiType) {
+        const tableBody = $('#blueprintsTable tbody');
+
+        // Limpiar la tabla antes de agregar las nuevas filas
+        tableBody.empty();
+
         if (apiType === 'apiclient') {
             apiclient.getBlueprintsByAuthor(authorName, function (blueprints) {
-                const mappedBlueprints = blueprints.map(function (bp) {
-                    return {
-                        name: bp.name,
-                        numPoints: bp.points.length
-                    };
+                blueprints.forEach(function (bp) {
+                    const row = $('<tr>');
+                    row.append($('<td>').text(bp.name));
+                    row.append($('<td>').text(bp.points.length));
+                    row.append($('<td>').html('<button class="btn btn-primary viewBlueprint" data-author="' + authorName + '" data-blueprint="' + bp.name + '">Ver</button>'));
+                    tableBody.append(row);
                 });
 
-                $('#blueprintsTable tbody').empty();
-    
-                mappedBlueprints.forEach(function (bp) {
-                    const row = $('<tr>');
-                    row.append($('<td>').text(bp.name));
-                    row.append($('<td>').text(bp.numPoints));
-                    row.append($('<td>').html('<button class="btn btn-primary viewBlueprint" data-author="' + authorName + '" data-blueprint="' + bp.name + '">Ver</button>'));
-                    $('#blueprintsTable tbody').append(row);
-                });
-    
-                const totalPoints = mappedBlueprints.reduce(function (acc, bp) {
-                    return acc + bp.numPoints;
+                const totalPoints = blueprints.reduce(function (acc, bp) {
+                    return acc + bp.points.length;
                 }, 0);
-    
+
                 $('#totalPoints').text(totalPoints);
             });
-        }
-        else if (apiType === 'apimock') {
+        } else if (apiType === 'apimock') {
             apimock.getBlueprintsByAuthor(authorName, function (blueprints) {
-                const mappedBlueprints = blueprints.map(function (bp) {
-                    return {
-                        name: bp.name,
-                        numPoints: bp.points.length
-                    };
-                });
-                $('#blueprintsTable tbody').empty();
-    
-                mappedBlueprints.forEach(function (bp) {
+                blueprints.forEach(function (bp) {
                     const row = $('<tr>');
                     row.append($('<td>').text(bp.name));
-                    row.append($('<td>').text(bp.numPoints));
+                    row.append($('<td>').text(bp.points.length));
                     row.append($('<td>').html('<button class="btn btn-primary viewBlueprint" data-author="' + authorName + '" data-blueprint="' + bp.name + '">Ver</button>'));
-                    $('#blueprintsTable tbody').append(row);
+                    tableBody.append(row);
                 });
-    
-                const totalPoints = mappedBlueprints.reduce(function (acc, bp) {
-                    return acc + bp.numPoints;
+
+                const totalPoints = blueprints.reduce(function (acc, bp) {
+                    return acc + bp.points.length;
                 }, 0);
-    
+
                 $('#totalPoints').text(totalPoints);
             });
         }
     }
 
     function getBlueprintsByNameAndAuthor(authorName, bpname, apiType) {
-        if (apiType === 'apiclient') { 
+        if (apiType === 'apiclient') {
             apiclient.getBlueprintsByNameAndAuthor(authorName, bpname, function (blueprint) {
                 if (blueprint) {
                     drawBlueprint(blueprint);
                 }
             });
-        }
-        else if (apiType === 'apimock') { 
+        } else if (apiType === 'apimock') {
             apimock.getBlueprintsByNameAndAuthor(authorName, bpname, function (blueprint) {
                 if (blueprint) {
                     drawBlueprint(blueprint);
