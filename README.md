@@ -67,7 +67,9 @@
     ```
     http://localhost:8080/index.html
     ```
+    ![](SS/S1.png)
     2. Al abrir la consola de desarrollador del navegador, NO deben aparecer mensajes de error 404 (es decir, que las librerías de JavaScript se cargaron correctamente).
+    ![](SS/S2.png)
 
 ## Front-End - Lógica
 
